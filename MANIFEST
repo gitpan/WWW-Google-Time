@@ -1,0 +1,11 @@
+Build.PL
+Changes
+MANIFEST
+README
+examples/time.pl
+lib/WWW/Google/Time.pm
+t/00-load.t
+t/pod-coverage.t
+t/pod.t
+Makefile.PL
+META.yml
