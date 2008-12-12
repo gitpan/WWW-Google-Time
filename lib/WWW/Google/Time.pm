@@ -3,7 +3,7 @@ package WWW::Google::Time;
 use warnings;
 use strict;
 
-our $VERSION = '0.0101';
+our $VERSION = '0.0102';
 
 use LWP::UserAgent;
 use URI;
@@ -47,7 +47,7 @@ sub get_time {
     }
 
     my %data;
-    @data{ qw/time day_of_week time_zone where/ } = $response->decoded_content
+    @data{ qw/time day_of_week time_zone where/ } = $response->content
     =~ m|<img \s+ border=0 \s+ width=40 \s+ height=30 \s+ valign=middle
         \s+ src=http://www\.google\.com/chart\?\S+ \s+ alt="Clock"></td><td
         \s+ valign=middle><b>([^<]+)</b> \s+ (\S+) \s+ \( (\w+) \) \s+ - \s+ <b>Time</b>

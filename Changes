@@ -1,5 +1,8 @@
 Revision history for WWW-Google-Time
 
+0.0102  October 11, 2008
+        Small change in attempt to fix FAIL reports. No change in the interface
+
 0.0101  October 11, 2008
         First version, released on an unsuspecting world.
 
