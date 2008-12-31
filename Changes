@@ -1,5 +1,8 @@
 Revision history for WWW-Google-Time
 
+0.0103  December 30, 2008
+        Fixed a bug where no data would be parsed when multiple time results are present
+
 0.0102  October 11, 2008
         Small change in attempt to fix FAIL reports. No change in the interface
 

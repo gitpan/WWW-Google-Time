@@ -3,7 +3,7 @@ package WWW::Google::Time;
 use warnings;
 use strict;
 
-our $VERSION = '0.0102';
+our $VERSION = '0.0103';
 
 use LWP::UserAgent;
 use URI;
@@ -47,12 +47,26 @@ sub get_time {
     }
 
     my %data;
-    @data{ qw/time day_of_week time_zone where/ } = $response->content
-    =~ m|<img \s+ border=0 \s+ width=40 \s+ height=30 \s+ valign=middle
-        \s+ src=http://www\.google\.com/chart\?\S+ \s+ alt="Clock"></td><td
-        \s+ valign=middle><b>([^<]+)</b> \s+ (\S+) \s+ \( (\w+) \) \s+ - \s+ <b>Time</b>
-        \s+ in \s+ (.+?)</td>
-    |x or return $self->_set_error("Could not find time data for that location");
+#     @data{ qw/time day_of_week time_zone where/ } = $response->content
+#     =~ m|<img \s+ border=0 \s+ width=40 \s+ height=30 \s+ valign=middle
+#         \s+ src=http://www\.google\.com/chart\?\S+ \s+ alt="Clock"></td><td
+#         \s+ valign=middle><b>([^<]+)</b> \s+ (\S+) \s+ \( (\w+) \) \s+ - \s+ <b>Time</b>
+#         \s+ in \s+ (.+?)</td>
+#     |x or return $self->_set_error("Could not find time data for that location");
+
+@data{ qw/time day_of_week time_zone where/ } = $response->content
+
+    =~ m/<img \s+ border=0 \s+ width=40 \s+ height=30 \s+ valign=middle
+
+        \s+ src=http:\/\/www\.google\.com\/chart\?\S+ \s+
+alt="Clock"><\/td><td
+
+        \s+ valign=\w{3,6}><b>([^<]+)<\/b> \s+ (\S+) \s+ \( (\w+) \) \s+ -
+\s+ <b>Time<\/b>
+
+        \s+ in \s+ (.+?)<(br|\/td)>
+
+    /x or return $self->_set_error("Could not find time data for that location");
 
     $data{where} =~ s|</?b>||g;
 
@@ -202,10 +216,17 @@ contructor (C<new()> method). Returns the object currently beign used for access
 The C<examples/> directory of this distribution contains an executable script that uses this
 module.
 
+=head1 TO DO
+
+Sometimes Google returns multiple times.. e.g. "time in Norway" returns three results.
+Would be nice to be able to return all three results in an arrayref or something
+
 =head1 AUTHOR
 
 Zoffix Znet, C<< <zoffix at cpan.org> >>
 (L<http://zoffix.com/>, L<http://haslayout.net/>, L<http://zofdesign.com/>)
+
+Patches by Neil Stott
 
 =head1 BUGS
 
