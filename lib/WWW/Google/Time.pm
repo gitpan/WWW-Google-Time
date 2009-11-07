@@ -3,7 +3,7 @@ package WWW::Google::Time;
 use warnings;
 use strict;
 
-our $VERSION = '0.0103';
+our $VERSION = '0.0113';
 
 use LWP::UserAgent;
 use URI;
@@ -54,19 +54,23 @@ sub get_time {
 #         \s+ in \s+ (.+?)</td>
 #     |x or return $self->_set_error("Could not find time data for that location");
 
+
+
+# <img border=0 width=40 height=30 valign=middle src="http://www.google.com/chart?chs=40x30&amp;chc=localtime
+# &amp;cht=cf&amp;chd=s:MO&amp;sig=K3z5k11L2F_8LtLMTNqBsLOpylg" alt=""><td valign=middle><b>12:14pm</b> Saturday (EST) -
+# <b>Time</b> in <b>Toronto</b>, Ontario</table>
 @data{ qw/time day_of_week time_zone where/ } = $response->content
 
-    =~ m/<img \s+ border=0 \s+ width=40 \s+ height=30 \s+ valign=middle
+    =~ m{<img \s+ border=0 \s+ width=40 \s+ height=30 \s+ valign=middle
 
-        \s+ src=http:\/\/www\.google\.com\/chart\?\S+ \s+
-alt="Clock"><\/td><td
+        \s+ src="http://www[.]google[.]com/chart\?chs=40x30&amp;chc=localtime\S+
 
-        \s+ valign=\w{3,6}><b>([^<]+)<\/b> \s+ (\S+) \s+ \( (\w+) \) \s+ -
+     \s+ alt=""><td \s+ valign=(?:top|middle)><b>([^<]+)<\/b> \s+ (\S+) \s+ \( (\w+) \) \s+ -
 \s+ <b>Time<\/b>
 
-        \s+ in \s+ (.+?)<(br|\/td)>
+        \s+ in \s+ (.+?)<(br|/table)>
 
-    /x or return $self->_set_error("Could not find time data for that location");
+    }x or return $self->_set_error("Could not find time data for that location");
 
     $data{where} =~ s|</?b>||g;
 

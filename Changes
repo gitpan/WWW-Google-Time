@@ -1,5 +1,8 @@
 Revision history for WWW-Google-Time
 
+0.0113  November 7, 2009
+        Fixed module breakage caused by Google's updated markup
+
 0.0103  December 30, 2008
         Fixed a bug where no data would be parsed when multiple time results are present
 
