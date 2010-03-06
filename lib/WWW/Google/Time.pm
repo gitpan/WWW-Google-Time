@@ -3,7 +3,7 @@ package WWW::Google::Time;
 use warnings;
 use strict;
 
-our $VERSION = '0.0113';
+our $VERSION = '0.0114';
 
 use LWP::UserAgent;
 use URI;
@@ -65,14 +65,17 @@ sub get_time {
 
         \s+ src="http://www[.]google[.]com/chart\?chs=40x30&amp;chc=localtime\S+
 
-     \s+ alt=""><td \s+ valign=(?:top|middle)><b>([^<]+)<\/b> \s+ (\S+) \s+ \( (\w+) \) \s+ -
-\s+ <b>Time<\/b>
+     \s+ alt=""><td \s+ valign=(?:top|middle)><em>([^<]+)<\/em> \s+ (\S+) \s+ \( (\w+) \) \s+ -
+\s+ <em>Time<\/em>
 
         \s+ in \s+ (.+?)<(br|/table)>
 
-    }x or return $self->_set_error("Could not find time data for that location");
+    }x or do {
+        print "\n\n\n" . $response->content . "\n\n\n";
+        return $self->_set_error("Could not find time data for that location");
+    };
 
-    $data{where} =~ s|</?b>||g;
+    $data{where} =~ s|</?em>||g;
 
     return $self->data( \%data );
 }
