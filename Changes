@@ -1,5 +1,8 @@
 Revision history for WWW-Google-Time
 
+0.0115  June 2, 2010
+        Fixed module breakage caused by Google's change of HTML
+
 0.0114  March 6, 2010
         Fixed module breakage caused by Google's change from <b> to <em>
 

@@ -1,6 +1,6 @@
 ---
 name: WWW-Google-Time
-version: 0.0114
+version: 0.0115
 author:
   - 'Zoffix Znet <zoffix@cpan.org>'
 abstract: get time for various locations via Google
@@ -18,7 +18,7 @@ configure_requires:
 provides:
   WWW::Google::Time:
     file: lib/WWW/Google/Time.pm
-    version: 0.0114
+    version: 0.0115
 generated_by: Module::Build version 0.35
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html

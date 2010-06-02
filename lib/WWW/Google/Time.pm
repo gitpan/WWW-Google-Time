@@ -3,7 +3,7 @@ package WWW::Google::Time;
 use warnings;
 use strict;
 
-our $VERSION = '0.0114';
+our $VERSION = '0.0115';
 
 use LWP::UserAgent;
 use URI;
@@ -61,17 +61,13 @@ sub get_time {
 # <b>Time</b> in <b>Toronto</b>, Ontario</table>
 @data{ qw/time day_of_week time_zone where/ } = $response->content
 
-    =~ m{<img \s+ border=0 \s+ width=40 \s+ height=30 \s+ valign=middle
-
-        \s+ src="http://www[.]google[.]com/chart\?chs=40x30&amp;chc=localtime\S+
-
-     \s+ alt=""><td \s+ valign=(?:top|middle)><em>([^<]+)<\/em> \s+ (\S+) \s+ \( (\w+) \) \s+ -
+    =~ m{<img \s+ src="/images/icons/onebox/clock-40[.]gif[^>]*><td \s+ valign=(?:top|middle)><em>([^<]+)<\/em> \s+ (\S+) \s+ \( (\w+) \) \s+ -
 \s+ <em>Time<\/em>
 
-        \s+ in \s+ (.+?)<(br|/table)>
+        \s+ in \s+ (.+?)<(?:br|/table)>
 
     }x or do {
-        print "\n\n\n" . $response->content . "\n\n\n";
+#         print "\n\n\n" . $response->content . "\n\n\n";
         return $self->_set_error("Could not find time data for that location");
     };
 
@@ -233,7 +229,7 @@ Would be nice to be able to return all three results in an arrayref or something
 Zoffix Znet, C<< <zoffix at cpan.org> >>
 (L<http://zoffix.com/>, L<http://haslayout.net/>, L<http://zofdesign.com/>)
 
-Patches by Neil Stott
+Patches by Neil Stott and Zach Hauri
 
 =head1 BUGS
 
