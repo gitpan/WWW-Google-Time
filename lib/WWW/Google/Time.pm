@@ -3,7 +3,7 @@ package WWW::Google::Time;
 use warnings;
 use strict;
 
-our $VERSION = '0.0116';
+our $VERSION = '0.0117';
 
 use LWP::UserAgent;
 use URI;
@@ -46,35 +46,19 @@ sub get_time {
         return $self->_set_error( $response, 'net' );
     }
 
+open my $fh, '>', 'out.txt' or die;
+print $fh $response->decoded_content.'\n';
+close $fh;
+
     my %data;
-#     @data{ qw/time day_of_week time_zone where/ } = $response->content
-#     =~ m|<img \s+ border=0 \s+ width=40 \s+ height=30 \s+ valign=middle
-#         \s+ src=http://www\.google\.com/chart\?\S+ \s+ alt="Clock"></td><td
-#         \s+ valign=middle><b>([^<]+)</b> \s+ (\S+) \s+ \( (\w+) \) \s+ - \s+ <b>Time</b>
-#         \s+ in \s+ (.+?)</td>
-#     |x or return $self->_set_error("Could not find time data for that location");
-
-
-
-# <img border=0 width=40 height=30 valign=middle src="http://www.google.com/chart?chs=40x30&amp;chc=localtime
-# &amp;cht=cf&amp;chd=s:MO&amp;sig=K3z5k11L2F_8LtLMTNqBsLOpylg" alt=""><td valign=middle><b>12:14pm</b> Saturday (EST) -
-# <b>Time</b> in <b>Toronto</b>, Ontario</table>
-@data{ qw/time day_of_week time_zone where/ } = $response->content
-
-    =~ m{<td valign="?(?:top|middle)"?><em>([^<]+)<\/em> (\S+) \((\w+)\) - <em>Time<\/em> in (.+?)<(?:\/table|br)>}
-
+    @data{ qw/time day_of_week time_zone where/ } = $response->content
+    =~ m{<td\s+style=\"font-size:[^"]+\"><b>([^<]+)<\/b> (\S+) \((\w+)\) - <b>Time<\/b> in (.+?)<(?:\/table|br)>}
+#         <td style="font-size:medium"><b>7:26</b> Saturday (EST) - <b>Time</b> in <b>Toronto, ON, Canada</b></table>
     or do {
-#     =~ m{<img \s+ src="/images/icons/onebox/clock-40[.]gif[^>]*><td \s+ valign=(?:top|middle)><em>([^<]+)<\/em> \s+ (\S+) \s+ \( (\w+) \) \s+ -
-# \s+ <em>Time<\/em>
-# 
-#         \s+ in \s+ (.+?)<(?:br|/table)>
-# 
-#     }x or do {
-#         print "\n\n\n" . $response->content . "\n\n\n";
         return $self->_set_error("Could not find time data for that location");
     };
 
-    $data{where} =~ s|</?em>||g;
+    $data{where} =~ s{</?em>|</?b>}{}g;
 
     return $self->data( \%data );
 }

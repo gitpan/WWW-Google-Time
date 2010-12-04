@@ -32,13 +32,13 @@ if ( not defined $res ) {
 ok(1);
 is( ref $res, 'HASH', "return from get_time() is a hashref");
 is( scalar(keys %$res), 4, "hashref has 4 keys");
-like( $res->{time}, qr/\d?\d:\d\d\w\w/, "{time} key matches expected format [$res->{time}]");
+like( $res->{time}, qr/\d?\d:\d\d/, "{time} key matches expected format [$res->{time}]");
 like( $res->{time_zone}, qr/[A-Z]+/, "{time_zone} key matches expected format [$res->{time_zone}]");
 
 my %days_of_week = map { $_ => 1 } qw/Monday Tuesday Wednesday Thursday Friday Saturday Sunday/;
 
 ok( exists $days_of_week{ $res->{day_of_week} }, "{day_of_week} key contains valid day of the week [$res->{day_of_week}]");
 
-is($res->{where}, 'Toronto, Ontario', "{where} key matches the expected [$res->{where}]");
+is($res->{where}, 'Toronto, ON, Canada', "{where} key matches the expected [$res->{where}]");
 is($t->where, 'Toronto', "where() method returns the right thing");
 }
