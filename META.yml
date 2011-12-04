@@ -15,11 +15,11 @@ name: WWW-Google-Time
 provides:
   WWW::Google::Time:
     file: lib/WWW/Google/Time.pm
-    version: 0.0117
+    version: 0.0118
 requires:
   Class::Data::Accessor: 0.04001
   LWP::UserAgent: 2.036
   URI: 1.35
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.0117
+version: 0.0118

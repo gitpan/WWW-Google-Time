@@ -3,7 +3,7 @@ package WWW::Google::Time;
 use warnings;
 use strict;
 
-our $VERSION = '0.0117';
+our $VERSION = '0.0118';
 
 use LWP::UserAgent;
 use URI;
@@ -52,7 +52,7 @@ close $fh;
 
     my %data;
     @data{ qw/time day_of_week time_zone where/ } = $response->content
-    =~ m{<td\s+style=\"font-size:[^"]+\"><b>([^<]+)<\/b> (\S+) \((\w+)\) - <b>Time<\/b> in (.+?)<(?:\/table|br)>}
+    =~ m{<td\s+style=\"font-size:[^"]+\"><b>([^<]+)</b> (\S+) \((\w+)\) - <b>Time</b> in (.+?)<(?:/table|br|/td></tr)>}
 #         <td style="font-size:medium"><b>7:26</b> Saturday (EST) - <b>Time</b> in <b>Toronto, ON, Canada</b></table>
     or do {
         return $self->_set_error("Could not find time data for that location");
