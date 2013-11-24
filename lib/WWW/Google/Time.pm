@@ -3,17 +3,17 @@ package WWW::Google::Time;
 use warnings;
 use strict;
 
-our $VERSION = '0.0118';
+our $VERSION = '0.0119';
 
 use LWP::UserAgent;
 use URI;
 use base 'Class::Data::Accessor';
-__PACKAGE__->mk_classaccessors qw/
+__PACKAGE__->mk_classaccessors(qw/
     error
     data
     where
     ua
-/;
+/);
 
 sub new {
     my ( $class, %args ) = @_;
@@ -51,12 +51,17 @@ print $fh $response->decoded_content.'\n';
 close $fh;
 
     my %data;
+#     print $response->content;
     @data{ qw/time day_of_week time_zone where/ } = $response->content
-    =~ m{<td\s+style=\"font-size:[^"]+\"><b>([^<]+)</b> (\S+) \((\w+)\) - <b>Time</b> in (.+?)<(?:/table|br|/td></tr)>}
+    =~ m{<td\s+style=\"font-size:[^"]+\">(?:&#8206;)?<b>([^<]+)</b> (\S+) \((\w+)\) - <b>Time</b> in (.+?)<(?:/table|br|/td></tr)>}
 #         <td style="font-size:medium"><b>7:26</b> Saturday (EST) - <b>Time</b> in <b>Toronto, ON, Canada</b></table>
     or do {
         return $self->_set_error("Could not find time data for that location");
     };
+
+
+# <td style="font-size:medium">&#8206;<b>2:29pm</b> Sunday (EST) - <b>Time</b> in <b>Toronto, ON, Canada</b></td>
+    
 
     $data{where} =~ s{</?em>|</?b>}{}g;
 
@@ -77,6 +82,8 @@ sub _set_error {
 
 1;
 __END__
+
+=encoding utf8
 
 =head1 NAME
 

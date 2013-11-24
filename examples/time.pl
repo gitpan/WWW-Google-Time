@@ -14,8 +14,14 @@ $t->get_time(shift)
     or die $t->error;
 
 printf "It is %s, %s (%s) in %s\n",
-    @{ $t->data }{ qw/day_of_week  time  time_zone  where/ };
+    @{ $t->data }{ qw/day_of_week  time time_zone  where/ };
 
+if ( $ENV{RELEASE_TESTING} ) {
+    for ( qw/day_of_week  time time_zone  where/ ) {
+        print "Key `$_`: ${\$t->data->{$_}}\n";
+    }
+}
+    
 
 =pod
 
