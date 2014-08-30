@@ -8,10 +8,8 @@ Makefile.PL
 README
 README.md
 dist.ini
-examples/out.txt
 examples/time.pl
 lib/WWW/Google/Time.pm
-out.txt
 t/00-compile.t
 t/00-load.t
 xt/author/pod-spell.t

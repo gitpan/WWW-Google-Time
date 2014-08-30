@@ -20,7 +20,7 @@ name: WWW-Google-Time
 provides:
   WWW::Google::Time:
     file: lib/WWW/Google/Time.pm
-    version: 1.001001
+    version: 1.001002
 requires:
   Class::Accessor::Grouped: 0
   LWP::UserAgent: 0
@@ -33,7 +33,7 @@ resources:
   bugtracker: https://github.com/zoffixznet/www-google-time/issues
   homepage: http://metacpan.org/release/WWW-Google-Time
   repository: git://github.com/zoffixznet/www-google-time.git
-version: 1.001001
+version: 1.001002
 x_Dist_Zilla:
   perl:
     version: 5.014002
@@ -326,7 +326,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v1.001001
+          tag: v1.001002
           tag_format: v%v
           tag_message: v%v
           time_zone: local

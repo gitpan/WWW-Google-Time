@@ -6,7 +6,7 @@ BEGIN {
     use_ok('LWP::UserAgent');
     use_ok('URI');
     use_ok('Class::Accessor::Grouped');
-	use_ok( 'WWW::Google::Time' );
+    use_ok( 'WWW::Google::Time' );
 }
 
 diag "Testing WWW::Google::Time $WWW::Google::Time::VERSION, Perl $], $^X";

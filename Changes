@@ -1,5 +1,9 @@
 Revision history for WWW-Google-Time
 
+1.001002  2014-08-30
+        - removed extraneous file from the dist
+        - removed leftover debugging code that created extra file (out.txt)
+
 1.001001  2014-08-30
         [Features]
         - Google now provides the month, date, and year. These are

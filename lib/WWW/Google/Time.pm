@@ -3,7 +3,7 @@ package WWW::Google::Time;
 use warnings;
 use strict;
 
-our $VERSION = '1.001001'; # VERSION
+our $VERSION = '1.001002'; # VERSION
 
 use LWP::UserAgent;
 use URI;
@@ -47,9 +47,9 @@ sub get_time {
         return $self->_set_error( $response, 'net' );
     }
 
-open my $fh, '>', 'out.txt' or die;
-print $fh $response->decoded_content.'\n';
-close $fh;
+# open my $fh, '>', 'out.txt' or die;
+# print $fh $response->decoded_content.'\n';
+# close $fh;
 
     my %data;
     # print $response->content;
