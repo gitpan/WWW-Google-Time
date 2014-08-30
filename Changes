@@ -1,5 +1,19 @@
 Revision history for WWW-Google-Time
 
+1.001001  2014-08-30
+        [Features]
+        - Google now provides the month, date, and year. These are
+          now included as extra keys in the returned hashref.
+
+        [Bug Fixes]
+        - Fixed module breakage due to Google's changes
+
+        [Packaging and Internals]
+        - Converted to dzil
+        - Got rid of Class::Data::Accessor, which is deprecated
+        - Moved author tests to xt/
+        - Cleaned up the 00-load.t a bit and added a few extra tests
+
 0.0119  2013-11-24
         - Fixed module breakage
         - Minor fixes to comply with the specs and Kwalitee game

@@ -3,12 +3,13 @@ package WWW::Google::Time;
 use warnings;
 use strict;
 
-our $VERSION = '0.0119';
+our $VERSION = '1.001001'; # VERSION
 
 use LWP::UserAgent;
 use URI;
-use base 'Class::Data::Accessor';
-__PACKAGE__->mk_classaccessors(qw/
+use base 'Class::Accessor::Grouped';
+
+__PACKAGE__->mk_group_accessors( simple => qw/
     error
     data
     where
@@ -51,17 +52,17 @@ print $fh $response->decoded_content.'\n';
 close $fh;
 
     my %data;
-#     print $response->content;
-    @data{ qw/time day_of_week time_zone where/ } = $response->content
-    =~ m{<td\s+style=\"font-size:[^"]+\">(?:&#8206;)?<b>([^<]+)</b> (\S+) \((\w+)\) - <b>Time</b> in (.+?)<(?:/table|br|/td></tr)>}
-#         <td style="font-size:medium"><b>7:26</b> Saturday (EST) - <b>Time</b> in <b>Toronto, ON, Canada</b></table>
+    # print $response->content;
+    @data{ qw/time day_of_week month month_day year time_zone where/ } = $response->content
+    =~ m{<div class="_rkc _Peb">(.+?)</div><div class="_HOb _Qeb"> (\w+), <span style="white-space:nowrap">(\w+) (\d+), (\d+)</span> \((.+?)\) </div><span class="_HOb _Qeb">   Time in (.+?) </span></div></div>}
+#         <div class="_rkc _Peb">8:47 AM</div><div class="_HOb _Qeb"> Saturday, <span style="white-space:nowrap">August 30, 2014</span> (EDT) </div><span class="_HOb _Qeb">   Time in Toronto, ON, Canada </span></div></div>
     or do {
         return $self->_set_error("Could not find time data for that location");
     };
 
 
 # <td style="font-size:medium">&#8206;<b>2:29pm</b> Sunday (EST) - <b>Time</b> in <b>Toronto, ON, Canada</b></td>
-    
+
 
     $data{where} =~ s{</?em>|</?b>}{}g;
 
@@ -70,7 +71,7 @@ close $fh;
 
 sub _set_error {
     my ( $self, $error_or_response, $is_response ) = @_;
-    
+
     if ( $is_response ) {
         $self->error( "Network error: " . $error_or_response->status_line );
     }
@@ -101,8 +102,10 @@ WWW::Google::Time - get time for various locations via Google
     $t->get_time("Toronto")
         or die $t->error;
 
-    printf "It is %s, %s (%s) in %s\n",
-        @{ $t->data }{ qw/day_of_week  time  time_zone  where/ };
+    printf "It is %s, %s (%s) %s %s, %s in %s\n",
+        @{ $t->data }{qw/
+            day_of_week  time  time_zone  month  month_day  year  where
+        /};
 
 =head1 DESCRIPTION
 
@@ -138,15 +141,18 @@ failure can be obtained via C<error()> method. On success returns a hashref with
 the following keys/values:
 
     $VAR1 = {
-          'time' => '7:00am',
+          'time' => '7:00 AM',
           'time_zone' => 'EDT',
           'day_of_week' => 'Saturday',
-          'where' => 'Toronto, Ontario'
+          'month' => 'August',
+          'month_day' => '30',
+          'year' => '2014',
+          'where' => 'Toronto, ON, Canada'
     };
 
 =head3 C<time>
 
-    'time' => '7:00am',
+    'time' => '7:00 AM',
 
 The C<time> key contains the time for the location as a string.
 
@@ -162,9 +168,27 @@ The C<time_zone> key contains the time zone in which the given location is.
 
 The C<day_of_week> key contains the day of the week that is right now in the location given.
 
+=head3 C<month>
+
+    'month' => 'August',
+
+The C<month> key contains the current month at the location.
+
+=head3 C<month_day>
+
+    'month_day' => '30',
+
+The C<month_day> key contains the date of the month at the location.
+
+=head3 C<year>
+
+    'year' => '2014',
+
+The C<year> key contains the year at the location.
+
 =head3 C<where>
 
-    'where' => 'Toronto, Ontario'
+    'where' => 'Toronto, ON, Canada'
 
 The C<where> key contains the name of the location to which the keys described above correlate.
 This is basically how Google interpreted the argument you gave to C<get_time()> method.
@@ -195,7 +219,7 @@ Takes no arguments. Returns the argument passed to the last call to C<get_time()
     ### dies with "Could not find time data for that location"
 
 When C<get_time()> fails (by returning either undef or empty list) the reason for failure
-will be available via C<error()> method. The "falure" is both, not being able to find time
+will be available via C<error()> method. The "failure" is both, not being able to find time
 data for the given location or network errors. The error message will say which one it is.
 
 =head2 C<ua>
@@ -206,7 +230,7 @@ data for the given location or network errors. The error message will say which 
     $t->ua( LWP::UserAgent->new( agent => 'Mozilla' ) );
 
 Takes one optional argument which must fit the same criteria as the C<ua> argument to the
-contructor (C<new()> method). Returns the object currently beign used for accessing Google.
+constructor (C<new()> method). Returns the object currently being used for accessing Google.
 
 =head1 EXAMPLES
 
@@ -218,54 +242,49 @@ module.
 Sometimes Google returns multiple times.. e.g. "time in Norway" returns three results.
 Would be nice to be able to return all three results in an arrayref or something
 
-=head1 AUTHOR
+=head1 REPOSITORY
 
-Zoffix Znet, C<< <zoffix at cpan.org> >>
-(L<http://zoffix.com/>, L<http://haslayout.net/>, L<http://zofdesign.com/>)
+=for html  <div style="display: table; height: 91px; background: url(http://zoffix.com/CPAN/Dist-Zilla-Plugin-Pod-Spiffy/icons/section-github.png) no-repeat left; padding-left: 120px;" ><div style="display: table-cell; vertical-align: middle;">
 
-Patches by Neil Stott and Zach Hauri (L<http://zach.livejournal.com/>)
+Fork this module on GitHub:
+L<https://github.com/zoffixznet/WWW-Google-Time>
+
+=for html  </div></div>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-www-google-time at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-Google-Time>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
+=for html  <div style="display: table; height: 91px; background: url(http://zoffix.com/CPAN/Dist-Zilla-Plugin-Pod-Spiffy/icons/section-bugs.png) no-repeat left; padding-left: 120px;" ><div style="display: table-cell; vertical-align: middle;">
 
-=head1 SUPPORT
+To report bugs or request features, please use
+L<https://github.com/zoffixznet/WWW-Google-Time/issues>
 
-You can find documentation for this module with the perldoc command.
+If you can't access GitHub, you can email your request
+to C<bug-WWW-Google-Time at rt.cpan.org>
 
-    perldoc WWW::Google::Time
+=for html  </div></div>
 
-You can also look for information at:
+=head1 AUTHOR
 
-=over 4
+=for html  <div style="display: table; height: 91px; background: url(http://zoffix.com/CPAN/Dist-Zilla-Plugin-Pod-Spiffy/icons/section-author.png) no-repeat left; padding-left: 120px;" ><div style="display: table-cell; vertical-align: middle;">
 
-=item * RT: CPAN's request tracker
+=for html   <span style="display: inline-block; text-align: center;"> <a href="http://metacpan.org/author/ZOFFIX"> <img src="http://www.gravatar.com/avatar/328e658ab6b08dfb5c106266a4a5d065?d=http%3A%2F%2Fwww.gravatar.com%2Favatar%2F627d83ef9879f31bdabf448e666a32d5" alt="ZOFFIX" style="display: block; margin: 0 3px 5px 0!important; border: 1px solid #666; border-radius: 3px; "> <span style="color: #333; font-weight: bold;">ZOFFIX</span> </a> </span>
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WWW-Google-Time>
+=for text Zoffix Znet <zoffix at cpan.org>
 
-=item * AnnoCPAN: Annotated CPAN documentation
+=for html  </div></div>
 
-L<http://annocpan.org/dist/WWW-Google-Time>
+=head1 CONTRIBUTORS
 
-=item * CPAN Ratings
+=for html  <div style="display: table; height: 91px; background: url(http://zoffix.com/CPAN/Dist-Zilla-Plugin-Pod-Spiffy/icons/section-contributors.png) no-repeat left; padding-left: 120px;" ><div style="display: table-cell; vertical-align: middle;">
 
-L<http://cpanratings.perl.org/d/WWW-Google-Time>
+Patches by Neil Stott and Zach Hauri (L<http://zach.livejournal.com/>)
 
-=item * Search CPAN
+=for html  </div></div>
 
-L<http://search.cpan.org/dist/WWW-Google-Time>
+=head1 LICENSE
 
-=back
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2008 Zoffix Znet, all rights reserved.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
-
+You can use and distribute this module under the same terms as Perl itself.
+See the C<LICENSE> file included in this distribution for complete
+details.
 
 =cut
-
