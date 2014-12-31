@@ -70,8 +70,8 @@ SKIP: {
         qr/^\d{4}$/,
         "{year} key matches expected format [$res->{year}]";
 
-    is $res->{where},
-        'Toronto, ON',
+    like $res->{where},
+        qr/^Toronto, ON(, Canada)?$/,
         "{where} key matches the expected [$res->{where}]";
 
     is $t->where, 'Toronto', "where() method returns the right thing";

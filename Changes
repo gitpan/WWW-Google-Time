@@ -1,5 +1,8 @@
 Revision history for WWW-Google-Time
 
+1.001004  2014-12-31
+        - Fixed a breaking test
+
 1.001003  2014-12-31
         - Fixed breakage due to google changing their code
 
