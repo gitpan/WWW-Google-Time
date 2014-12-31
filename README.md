@@ -156,22 +156,10 @@ Would be nice to be able to return all three results in an arrayref or something
 
 # REPOSITORY
 
-<div>
-    <div style="display: table; height: 91px; background: url(http://zoffix.com/CPAN/Dist-Zilla-Plugin-Pod-Spiffy/icons/section-github.png) no-repeat left; padding-left: 120px;" ><div style="display: table-cell; vertical-align: middle;">
-</div>
-
 Fork this module on GitHub:
 [https://github.com/zoffixznet/WWW-Google-Time](https://github.com/zoffixznet/WWW-Google-Time)
 
-<div>
-    </div></div>
-</div>
-
 # BUGS
-
-<div>
-    <div style="display: table; height: 91px; background: url(http://zoffix.com/CPAN/Dist-Zilla-Plugin-Pod-Spiffy/icons/section-bugs.png) no-repeat left; padding-left: 120px;" ><div style="display: table-cell; vertical-align: middle;">
-</div>
 
 To report bugs or request features, please use
 [https://github.com/zoffixznet/WWW-Google-Time/issues](https://github.com/zoffixznet/WWW-Google-Time/issues)
@@ -179,35 +167,11 @@ To report bugs or request features, please use
 If you can't access GitHub, you can email your request
 to `bug-WWW-Google-Time at rt.cpan.org`
 
-<div>
-    </div></div>
-</div>
-
 # AUTHOR
-
-<div>
-    <div style="display: table; height: 91px; background: url(http://zoffix.com/CPAN/Dist-Zilla-Plugin-Pod-Spiffy/icons/section-author.png) no-repeat left; padding-left: 120px;" ><div style="display: table-cell; vertical-align: middle;">
-</div>
-
-<div>
-    <span style="display: inline-block; text-align: center;"> <a href="http://metacpan.org/author/ZOFFIX"> <img src="http://www.gravatar.com/avatar/328e658ab6b08dfb5c106266a4a5d065?d=http%3A%2F%2Fwww.gravatar.com%2Favatar%2F627d83ef9879f31bdabf448e666a32d5" alt="ZOFFIX" style="display: block; margin: 0 3px 5px 0!important; border: 1px solid #666; border-radius: 3px; "> <span style="color: #333; font-weight: bold;">ZOFFIX</span> </a> </span>
-</div>
-
-<div>
-    </div></div>
-</div>
 
 # CONTRIBUTORS
 
-<div>
-    <div style="display: table; height: 91px; background: url(http://zoffix.com/CPAN/Dist-Zilla-Plugin-Pod-Spiffy/icons/section-contributors.png) no-repeat left; padding-left: 120px;" ><div style="display: table-cell; vertical-align: middle;">
-</div>
-
 Patches by Neil Stott and Zach Hauri ([http://zach.livejournal.com/](http://zach.livejournal.com/))
-
-<div>
-    </div></div>
-</div>
 
 # LICENSE
 

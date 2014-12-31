@@ -71,7 +71,7 @@ SKIP: {
         "{year} key matches expected format [$res->{year}]";
 
     is $res->{where},
-        'Toronto, ON, Canada',
+        'Toronto, ON',
         "{where} key matches the expected [$res->{where}]";
 
     is $t->where, 'Toronto', "where() method returns the right thing";
