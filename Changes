@@ -1,5 +1,8 @@
 Revision history for WWW-Google-Time
 
+1.001005  2014-12-31
+        - Fixed failing matches for multi-time-zone requests
+
 1.001004  2014-12-31
         - Fixed a breaking test
 
